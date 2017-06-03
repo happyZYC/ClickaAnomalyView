@@ -206,12 +206,63 @@
     [righthandBtn addTarget:self action:@selector(childBackClickAction:) forControlEvents:UIControlEventTouchUpInside];
     [righthandBtn addTarget:self action:@selector(childBackClickAction:) forControlEvents:UIControlEventTouchUpInside];
     righthandBtn.tag = 11;
+    
+    
+    //
+    [self btnEvevts:leftArmBtn];
+    [self btnEvevts:lefthandBtn];
+    [self btnEvevts:rightArmBtn];
+    [self btnEvevts:righthandBtn];
+    
 }
+
+- (void)btnEvevts:(UIButton *)btn{
+    [btn addTarget:self action:@selector(clickDown:) forControlEvents:UIControlEventTouchDown];
+    [btn addTarget:self action:@selector(clickDown:) forControlEvents:UIControlEventTouchDragInside];
+    [btn addTarget:self action:@selector(changeBtnState:) forControlEvents:UIControlEventTouchDragOutside];
+    [btn addTarget:self action:@selector(changeBtnState:) forControlEvents:UIControlEventTouchCancel];
+    
+}
+
+- (void)clickDown:(UIButton *)btn{
+    UIButton *left;
+    UIButton *right;
+    if (btn.tag==8||btn.tag==10) {
+        left = [self viewWithTag:8];
+        right = [self viewWithTag:10];
+    }else if (btn.tag==9||btn.tag==11){
+        left = [self viewWithTag:9];
+        right = [self viewWithTag:11];
+    }else{
+        return;
+    }
+    left.highlighted = YES;
+    right.highlighted = YES;
+}
+- (void)changeBtnState:(UIButton *)btn{
+    UIButton *left;
+    UIButton *right;
+    if (btn.tag==8||btn.tag==10) {
+        left = [self viewWithTag:8];
+        right = [self viewWithTag:10];
+    }else if (btn.tag==9||btn.tag==11){
+        left = [self viewWithTag:9];
+        right = [self viewWithTag:11];
+    }else{
+        return;
+    }
+    left.highlighted = NO;
+    right.highlighted = NO;
+}
+
+
+
 - (void)childBackClickAction:(UIButton *)sender
 {
+    [self changeBtnState:sender];
     NSInteger idx = sender.tag;
     if (self.delegate && [self.delegate respondsToSelector:@selector(selectSex:selectPart:isFront:)]) {
-        [self.delegate selectSex:3 selectPart:idx isFront:NO];
+        [self.delegate selectSex:1 selectPart:idx isFront:YES];
     }
 }
 
